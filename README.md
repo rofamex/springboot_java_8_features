@@ -1,1 +1,9 @@
-# springboot_java_8_features
+Java 8 Features
+
+# Project Dependencies
+
+## Developer Tools  
+###### Spring Boot DevTools
+
+## Web  
+###### Spring Web
