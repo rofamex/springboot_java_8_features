@@ -18,7 +18,12 @@ returns an Optional for the first entry in the stream; the Optional can, of cour
 use when need to get an array out of the stream  
 * flatMap  
 flatten the data structure to simplify further operations. e.g. turn List<List<String>> into List<String>  
-
+* count  
+count the size of the stream  
+* skip  
+skip the first n elements  
+* limit  
+limit the size of stream to n elements  
   
 
 # Project Dependencies
