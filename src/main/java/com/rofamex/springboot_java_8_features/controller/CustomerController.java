@@ -13,7 +13,13 @@ public class CustomerController {
 
 	@GetMapping(value = "/execute")
 	public void execute() {
-		customerService.streamMapTest();
+//		customerService.streamForEachTest();
+//		customerService.streamMapTest();
+//		customerService.streamFindFirstTest();
+//		customerService.streamToArrayTest();
+//		customerService.streamFlatMapTest();
+		customerService.streamPeekTest();
+		
 	}
 
 }
