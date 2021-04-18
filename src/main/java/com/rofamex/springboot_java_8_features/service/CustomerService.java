@@ -62,7 +62,7 @@ public class CustomerService {
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamFindFirstTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
@@ -81,24 +81,24 @@ public class CustomerService {
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamToArrayTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
 		Stream<Customer> customerStream = createStream();
-		
+
 		// @formatter:off
 		Customer[] arrayOfCustomer = customerStream
 				.toArray(Customer[]::new);
 		// @formatter:on
-		
+
 		for (int i = 0; i < arrayOfCustomer.length; i++) {
 			LOG.info("customer name={}, age={}", arrayOfCustomer[i].getName(), arrayOfCustomer[i].getAge());
 		}
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamFlatMapTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
@@ -112,15 +112,15 @@ public class CustomerService {
 			      .flatMap(Collection::stream)
 			      .collect(Collectors.toList());
 		// @formatter:on
-		
+
 		LOG.info("list of names={}", namesFlatStream);
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamPeekTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
-		
+
 		Stream<Customer> customerStream = createStream();
 
 		// @formatter:off
@@ -135,8 +135,26 @@ public class CustomerService {
 		});
 
 		// @formatter:on
-		
+
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
+	public void streamSkipLimitTest() {
+		LOG.info("-------------------------- LOG START LOG ---------------------------");
+
+		Stream<Customer> customerStream = createStream();
+
+		Stream<Integer> infiniteStream = Stream.iterate(2, i -> i * 2);
+
+		// @formatter:off
+	    List<Integer> collect = infiniteStream
+	      .skip(2)
+	      .limit(5)
+	      .peek(num -> LOG.info("Your number is {}.", num))
+	      .collect(Collectors.toList());
+		// @formatter:on
+
+		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+	}
+
 }
