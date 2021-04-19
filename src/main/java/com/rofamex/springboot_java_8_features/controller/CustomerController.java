@@ -19,7 +19,9 @@ public class CustomerController {
 //		customerService.streamToArrayTest();
 //		customerService.streamFlatMapTest();
 //		customerService.streamPeekTest();
-		customerService.streamSkipLimitTest();
+//		customerService.streamSkipLimitTest();
+//		customerService.streamSortTest();
+		customerService.streamMinMaxTest();
 		
 	}
 

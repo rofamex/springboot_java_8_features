@@ -24,9 +24,9 @@ public class CustomerService {
 
 	private Stream<Customer> createStream() {
 		Stream.Builder<Customer> customerStreamBuilder = Stream.builder();
-		customerStreamBuilder.accept(new Customer(1L, "Alice", 28));
-		customerStreamBuilder.accept(new Customer(2L, "Paul", 50));
-		customerStreamBuilder.accept(new Customer(3L, "John", 57));
+		customerStreamBuilder.accept(new Customer(3L, "John", 50));
+		customerStreamBuilder.accept(new Customer(1L, "Alice", 72));
+		customerStreamBuilder.accept(new Customer(2L, "Paul", 57));
 
 		return customerStreamBuilder.build();
 	}
@@ -142,8 +142,6 @@ public class CustomerService {
 	public void streamSkipLimitTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
-
 		Stream<Integer> infiniteStream = Stream.iterate(2, i -> i * 2);
 
 		// @formatter:off
@@ -153,6 +151,47 @@ public class CustomerService {
 	      .peek(num -> LOG.info("Your number is {}.", num))
 	      .collect(Collectors.toList());
 		// @formatter:on
+
+		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+	}
+	
+	public void streamSortTest() {
+		LOG.info("-------------------------- LOG START LOG ---------------------------");
+
+		Stream<Customer> customerStream = createStream();
+
+		// @formatter:off
+		List<Customer> listOfCustomers= customerStream
+			.peek(c -> {
+				LOG.info("customer id={}, name={}, age={}", c.getId(), c.getName(), c.getAge());
+			})
+			.sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
+			.peek(c -> {
+				LOG.info("customer id={}, name={}, age={}", c.getId(), c.getName(), c.getAge());
+			})
+			.collect(Collectors.toList());
+		// @formatter:on
+
+
+		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+	}
+	
+	public void streamMinMaxTest() {
+		LOG.info("-------------------------- LOG START LOG ---------------------------");
+
+		Stream<Customer> customerStream = createStream();
+
+		// @formatter:off
+		Optional<Customer> customer = customerStream
+			.peek(c -> {
+				LOG.info("customer id={}, name={}, age={}", c.getId(), c.getName(), c.getAge());
+			})
+			.min((e1, e2) -> (int) (e1.getId() - e2.getId()));
+			
+		LOG.info("customer id={}, name={}, age={}", customer.get().getId(), customer.get().getName(), customer.get().getAge());
+
+		// @formatter:on
+
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
