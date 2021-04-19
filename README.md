@@ -24,6 +24,10 @@ count the size of the stream
 skip the first n elements  
 * limit  
 limit the size of stream to n elements  
+* sort  
+sorts the stream elements based on the comparator passed we pass into it  
+* min and max  
+return the minimum and maximum element in the stream respectively, based on a comparator  
   
 
 # Project Dependencies
