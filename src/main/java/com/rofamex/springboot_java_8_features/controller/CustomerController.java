@@ -21,8 +21,9 @@ public class CustomerController {
 //		customerService.streamPeekTest();
 //		customerService.streamSkipLimitTest();
 //		customerService.streamSortTest();
-		customerService.streamMinMaxTest();
+//		customerService.streamMinMaxTest();
 		
+		customerService.streamStringInverted();
 	}
 
 }

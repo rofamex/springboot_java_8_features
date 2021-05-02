@@ -1,11 +1,22 @@
 package com.rofamex.springboot_java_8_features.service;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +33,7 @@ public class CustomerService {
 	@Autowired
 	CustomerRepository customerRepository;
 
-	private Stream<Customer> createStream() {
+	private Stream<Customer> createStreamOfCustomer() {
 		Stream.Builder<Customer> customerStreamBuilder = Stream.builder();
 		customerStreamBuilder.accept(new Customer(3L, "John", 50));
 		customerStreamBuilder.accept(new Customer(1L, "Alice", 72));
@@ -34,7 +45,7 @@ public class CustomerService {
 	public void streamForEachTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
+		Stream<Customer> customerStream = createStreamOfCustomer();
 
 		customerStream.forEach(c -> {
 			LOG.info("customer name={}, age={}", c.getName(), c.getAge());
@@ -85,7 +96,7 @@ public class CustomerService {
 	public void streamToArrayTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
+		Stream<Customer> customerStream = createStreamOfCustomer();
 
 		// @formatter:off
 		Customer[] arrayOfCustomer = customerStream
@@ -121,7 +132,7 @@ public class CustomerService {
 	public void streamPeekTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
+		Stream<Customer> customerStream = createStreamOfCustomer();
 
 		// @formatter:off
 		List<Customer> listOfCustomers= customerStream
@@ -154,11 +165,11 @@ public class CustomerService {
 
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamSortTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
+		Stream<Customer> customerStream = createStreamOfCustomer();
 
 		// @formatter:off
 		List<Customer> listOfCustomers= customerStream
@@ -172,14 +183,13 @@ public class CustomerService {
 			.collect(Collectors.toList());
 		// @formatter:on
 
-
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
-	
+
 	public void streamMinMaxTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
-		Stream<Customer> customerStream = createStream();
+		Stream<Customer> customerStream = createStreamOfCustomer();
 
 		// @formatter:off
 		Optional<Customer> customer = customerStream
@@ -192,8 +202,51 @@ public class CustomerService {
 
 		// @formatter:on
 
-
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+	}
+
+	public void streamStringInverted() {
+		LOG.info("-------------------------- LOG START LOG ---------------------------");
+
+		String invertThisString = "invertThisString";
+		String reversedString = new StringBuilder(invertThisString).reverse().toString();
+		LOG.info("reversed string = {}", reversedString);
+		
+		LOG.info("-------------------------- OTHER WAY --------------------------------");
+		
+		// @formatter:off
+		Iterator<Character> revIter = invertThisString.chars() 
+	            .mapToObj(item -> new Character((char)item)) 
+	            .collect(Collectors.toCollection(ArrayDeque::new)) 
+	            .descendingIterator(); 
+	             
+	    reversedString = StreamSupport 
+	            .stream(Spliterators.spliteratorUnknownSize(revIter, Spliterator.ORDERED), false) 
+	            .map(Object::toString) 
+	            .collect(Collectors.joining()); 
+	    // @formatter:on
+	   LOG.info("reversed string = {}", reversedString);
+	   
+	   LOG.info("-------------------------- OTHER WAY --------------------------------");
+	   
+		// @formatter:off
+	   Stream.Builder<Character> charStreamBuilder = Stream.builder();
+	   
+	   ArrayDeque<Character> arrayDeque = new ArrayDeque<Character>();
+	   
+	   invertThisString.chars()
+	   .forEach(y -> arrayDeque.offerFirst(Character.valueOf((char) y)));
+	   
+	   reversedString = ""; 
+	   
+	   for (Iterator iterator = arrayDeque.iterator(); iterator.hasNext();) {
+		   reversedString = reversedString.concat(String.valueOf(iterator.next()));
+	   }
+
+		// @formatter:on
+	   LOG.info("reversed string = {}", reversedString);
+	 
+	   LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
 
 }
