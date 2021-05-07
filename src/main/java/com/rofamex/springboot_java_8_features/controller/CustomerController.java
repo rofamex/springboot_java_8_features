@@ -23,7 +23,8 @@ public class CustomerController {
 //		customerService.streamSortTest();
 //		customerService.streamMinMaxTest();
 		
-		customerService.streamStringInverted();
+//		customerService.streamStringInverted();
+		customerService.streamVerifyIfStringExistInsideList();
 	}
 
 }

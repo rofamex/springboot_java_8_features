@@ -1,23 +1,22 @@
 package com.rofamex.springboot_java_8_features.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.Spliterator;
 import java.util.Spliterators;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,6 +165,7 @@ public class CustomerService {
 		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
 	}
 
+	@Test
 	public void streamSortTest() {
 		LOG.info("-------------------------- LOG START LOG ---------------------------");
 
@@ -211,9 +211,9 @@ public class CustomerService {
 		String invertThisString = "invertThisString";
 		String reversedString = new StringBuilder(invertThisString).reverse().toString();
 		LOG.info("reversed string = {}", reversedString);
-		
+
 		LOG.info("-------------------------- OTHER WAY --------------------------------");
-		
+
 		// @formatter:off
 		Iterator<Character> revIter = invertThisString.chars() 
 	            .mapToObj(item -> new Character((char)item)) 
@@ -225,28 +225,49 @@ public class CustomerService {
 	            .map(Object::toString) 
 	            .collect(Collectors.joining()); 
 	    // @formatter:on
-	   LOG.info("reversed string = {}", reversedString);
-	   
-	   LOG.info("-------------------------- OTHER WAY --------------------------------");
-	   
-		// @formatter:off
-	   Stream.Builder<Character> charStreamBuilder = Stream.builder();
-	   
-	   ArrayDeque<Character> arrayDeque = new ArrayDeque<Character>();
-	   
-	   invertThisString.chars()
-	   .forEach(y -> arrayDeque.offerFirst(Character.valueOf((char) y)));
-	   
-	   reversedString = ""; 
-	   
-	   for (Iterator iterator = arrayDeque.iterator(); iterator.hasNext();) {
-		   reversedString = reversedString.concat(String.valueOf(iterator.next()));
-	   }
+		LOG.info("reversed string = {}", reversedString);
 
+		LOG.info("-------------------------- OTHER WAY --------------------------------");
+
+		// @formatter:off
+		Stream.Builder<Character> charStreamBuilder = Stream.builder();
+		
+		ArrayDeque<Character> arrayDeque = new ArrayDeque<Character>();
+		
+		invertThisString.chars()
+		.forEach(y -> arrayDeque.offerFirst(Character.valueOf((char) y)));
+		
+		reversedString = ""; 
+		
+		for (Iterator iterator = arrayDeque.iterator(); iterator.hasNext();) {
+		   reversedString = reversedString.concat(String.valueOf(iterator.next()));
+		}
+
+	    // @formatter:on
+		LOG.info("reversed string = {}", reversedString);
+
+		LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+	}
+
+	public void streamVerifyIfStringExistInsideList() {
+		ArrayList<String> listString = new ArrayList<>();
+		listString.add("testA");
+		listString.add("testB");
+		listString.add("testC");
+
+		String lookForkey = "testB";
+
+		// @formatter:off
+		boolean result = Optional.ofNullable(listString)  // An empty Optional object is created if the collection is null.
+	    .map(Collection::stream)  // extracts the value contained in the Optional object as a stream
+	    .orElseGet(Stream::empty)  // returns the fallback value in the event that the Optional object is empty
+	    .filter(Objects::nonNull)  // only get nonNull string in the list
+		.anyMatch(x -> x.equals(lookForkey));  // finds if any element of the stream matches a Predicate
 		// @formatter:on
-	   LOG.info("reversed string = {}", reversedString);
-	 
-	   LOG.info("-------------------------- LOG FINISH LOG --------------------------");
+		
+		assertEquals(false, result);
+
+		LOG.info("result = {}", result);
 	}
 
 }
